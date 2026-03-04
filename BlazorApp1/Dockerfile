@@ -2,8 +2,8 @@ FROM python:3.11-slim
 
 
 
-COPY Zscaler_Root_CA.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+#COPY Zscaler_Root_CA.crt /usr/local/share/ca-certificates/
+#RUN update-ca-certificates
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
