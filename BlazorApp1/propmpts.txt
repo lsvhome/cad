@@ -1,10 +1,10 @@
 --------------------- 1.0
 Give me Dockerfile and another required files for a Docker container with:
 
-Python (LLM client)
+C# (Blazor server app with LLM client)
 Logic for:
 
-Reading an existing .scad file or create new if .scad file not provided
+Upload with Blazor server app an existing .scad file or create new if .scad file not provided
 Applying natural language modifications to the code
 Saving modified .scad
 Rendering STL via OpenSCAD
@@ -12,3 +12,18 @@ Rendering STL via OpenSCAD
 
 Works with both cloud AI and local AI (Ollama).
 ---------------------
+
+
+Give me c# solution:
+
+C# (Blazor server app with LLM client) + Dockerfile and another required files for a Docker container without Python code:
+
+Logic for:
+
+Upload with Blazor server app an existing .scad file or create new if .scad file not provided
+Applying natural language modifications to the code
+Saving modified .scad
+Rendering STL via OpenSCAD
+
+
+Works with both cloud AI and local AI (Ollama).

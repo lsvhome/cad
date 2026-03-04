@@ -1,5 +1,15 @@
 FROM python:3.11-slim
 
+
+
+COPY Zscaler_Root_CA.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
+    update-ca-certificates && rm -rf /var/lib/apt/lists/*
+
+
 # Install OpenSCAD and dependencies
 RUN apt-get update && apt-get install -y \
     openscad \
@@ -11,7 +21,8 @@ WORKDIR /app
 
 # Copy requirements first for better caching
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+#--disable-pip-version-check --no-verify 
+RUN pip install --trusted-host pypi.org --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .
