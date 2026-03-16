@@ -4,25 +4,19 @@ services:
   openscad-modifier:
     build: .
     container_name: openscad-llm
+    ports:
+      - "8080:8080"
     volumes:
       - ./input:/app/input
       - ./output:/app/output
     environment:
-      # Choose AI provider: 'openai' or 'ollama'
-      - AI_PROVIDER=openai
-      
-      # OpenAI Configuration (if using OpenAI)
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - OPENAI_MODEL=gpt-4o-mini
-      
-      # Ollama Configuration (if using Ollama)
-      # Use host.docker.internal to access Ollama running on host
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - OLLAMA_MODEL=llama3.2
-      
-      # Processing Configuration
-      - INPUT_FILE=${INPUT_FILE:-}
-      - MODIFICATION=${MODIFICATION:-}
+      # ScadModifier configuration (overrides appsettings.json)
+      - ScadModifier__AiProvider=openai
+      - ScadModifier__OpenAiApiKey=${OPENAI_API_KEY}
+      - ScadModifier__OpenAiModel=gpt-4o-mini
+      - ScadModifier__OllamaBaseUrl=http://host.docker.internal:11434
+      - ScadModifier__OllamaModel=llama3.2
+      - ScadModifier__InputDir=/app/input
+      - ScadModifier__OutputDir=/app/output
     extra_hosts:
-      # Allow container to access host services (for Ollama)
       - "host.docker.internal:host-gateway"

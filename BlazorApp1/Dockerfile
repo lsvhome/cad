@@ -1,37 +1,33 @@
-FROM python:3.11-slim
+# --- Build stage ---
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
 
+COPY BlazorApp1/BlazorApp1.csproj BlazorApp1/
+RUN dotnet restore BlazorApp1/BlazorApp1.csproj --source https://api.nuget.org/v3/index.json
 
+COPY . .
+RUN dotnet publish BlazorApp1/BlazorApp1.csproj -c Release -o /app/publish --no-restore
 
+# --- Runtime stage ---
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+
+# Optional corporate root CA (remove if not needed)
 COPY Zscaler_Root_CA.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
-
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
-    update-ca-certificates && rm -rf /var/lib/apt/lists/*
-
-
-# Install OpenSCAD and dependencies
-RUN apt-get update && apt-get install -y \
+# Install OpenSCAD and xvfb for headless STL rendering
+RUN apt-get update && apt-get install -y --no-install-recommends \
     openscad \
     xvfb \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
-
-# Copy requirements first for better caching
-COPY requirements.txt .
-#--disable-pip-version-check --no-verify 
-RUN pip install --trusted-host pypi.org --no-cache-dir -r requirements.txt
-
-# Copy application files
-COPY . .
+COPY --from=build /app/publish .
 
 # Create directories for input/output
 RUN mkdir -p /app/input /app/output
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
 
-# Run the application
-CMD ["python", "main.py"]
+ENTRYPOINT ["dotnet", "BlazorApp1.dll"]
