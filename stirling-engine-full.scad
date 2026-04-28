@@ -120,6 +120,7 @@ translate([0, -(Dmax/2+lFaska-wallThikness), 2*wallThikness+hWaterChamber-1])
 translate([0, 0, wallThikness])
   tube(dCentralHole+2*wallThikness, wallThikness, hWaterChamber+wallThikness);
 
+hKoromislo  = LWorkCilinder-hWaterChamber-2*wallThikness+10;
 
 // опора важеля
 rotate([0,0,45])
@@ -129,21 +130,30 @@ rotate([0,0,45])
     {
      
      translate([0, -5, 0])   
-      cube([10, 10, LWorkCilinder-hWaterChamber-2*wallThikness]);
+      cube([10, 10, hKoromislo]);
 
-      translate([5, -5, LWorkCilinder-hWaterChamber-2*wallThikness])
+      translate([5, -5, hKoromislo])
         rotate([0,90,90])
           cylinder(10,5,5);
      };
      
-      translate([5, -5, LWorkCilinder-hWaterChamber-2*wallThikness])
+      translate([5, -5, hKoromislo])
         rotate([0,90,90])
           cylinder(10,1,1);
 
-      translate([0, 3-5, LWorkCilinder-hWaterChamber-2* wallThikness-10])
-     cube([10, 4, 20]);
+      translate([0, 3-5, hKoromislo-10])
+        cube([10, 4, 20]);
 
  };
+ 
+// Koromislo (важель)
+
+ translate([0, 0, hWaterChamber+2*wallThikness + hKoromislo -2])
+ rotate([0,0,45])
+     cube([65, 4, 4]);
+
+
+ 
 
 // Циліндр робочого поршня
 rotate([0,0,45])
@@ -168,6 +178,7 @@ rotate([0,0,45])
       translate([0,0,2])
         torus(DWorkPiston/2-0.1, 1);  
     }
+
   
 /* 
 translate([0, LWorkCilinder, 2*wallThikness+hWaterChamber+DWorkPiston/2])
@@ -203,3 +214,12 @@ rotate([0,-90,0])
         rotate([45,0,0]) 
          rotate([0,90,0]) 
            main(); 
+           
+           
+rotate([0,-90,0])
+  translate([-300,0,0])
+    projection(cut=false)
+      translate([0,0,0])
+        rotate([45,0,0]) 
+         rotate([0,90,0]) 
+           main();
