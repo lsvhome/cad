@@ -1,0 +1,8 @@
+{
+  "name": "llama-2-7b-chat",
+  "model": "llama-2-7b-chat.ggmlv3.q4_0.bin",
+  "parameters": {
+    "temperature": 0.7,
+    "top_p": 0.9
+  }
+}
